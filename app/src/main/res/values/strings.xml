@@ -15,4 +15,9 @@
     <string name="login_activity_link">Already a member? Login</string>
     <string name="signup_activity_link">No account yet? Create one</string>
     <string name="action_sign_up">Signup</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_create">Create</string>
+    <string name="title_archive">Archive</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

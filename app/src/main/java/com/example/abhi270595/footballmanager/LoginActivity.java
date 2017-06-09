@@ -82,6 +82,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         mEmailSignInButton.setEnabled(true);
-        finish();
+        // Start the Main activity
+        Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+        LoginActivity.this.startActivity(myIntent);
     }
 }
