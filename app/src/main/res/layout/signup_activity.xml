@@ -12,10 +12,10 @@
     tools:context="com.example.abhi270595.footballmanager.LoginActivity"
     android:background="@color/colorPrimary">
 
-    <ScrollView
+    <!--<ScrollView
         android:id="@+id/signup_form"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent">-->
 
         <LinearLayout
             android:id="@+id/email_signup_form"
@@ -28,11 +28,11 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-            <ImageView android:src="@mipmap/football"
+            <!--<ImageView android:src="@mipmap/football"
                 android:layout_width="wrap_content"
                 android:layout_height="72dp"
                 android:layout_marginBottom="12dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal" />-->
 
             <!--  Name Label -->
             <android.support.design.widget.TextInputLayout
@@ -100,5 +100,5 @@
                 android:textSize="16dp"/>
 
         </LinearLayout>
-    </ScrollView>
+    <!--</ScrollView>-->
 </FrameLayout>

@@ -91,7 +91,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/colorPrimaryDark"
-            android:text="Create" />
+            android:text="Create"
+            android:textColor="#ffffff"
+            />
     </RelativeLayout>
 
 </LinearLayout>

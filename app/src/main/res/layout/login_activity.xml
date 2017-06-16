@@ -9,13 +9,12 @@
     android:paddingLeft="@dimen/activity_horizontal_zero_margin"
     android:paddingRight="@dimen/activity_horizontal_zero_margin"
     android:paddingTop="@dimen/activity_vertical_zero_margin"
-    tools:context="com.example.abhi270595.footballmanager.LoginActivity"
-    android:background="@color/colorPrimary">
+    tools:context="com.example.abhi270595.footballmanager.LoginActivity">
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <!--<ScrollView-->
+        <!--android:id="@+id/login_form"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent">-->
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -28,15 +27,16 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin">
 
-            <ImageView android:src="@mipmap/football"
-                android:layout_width="wrap_content"
-                android:layout_height="72dp"
-                android:layout_marginBottom="12dp"
-                android:layout_gravity="center_horizontal" />
+            <!--<ImageView android:src="@mipmap/football"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="72dp"-->
+                <!--android:layout_marginBottom="12dp"-->
+                <!--android:layout_gravity="center_horizontal" />-->
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:theme="@style/MyTextInputLayout">
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
@@ -51,7 +51,8 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:theme="@style/MyTextInputLayout">
 
                 <EditText
                     android:id="@+id/password"
@@ -87,5 +88,5 @@
                 android:textSize="16dp"/>
 
         </LinearLayout>
-    </ScrollView>
+    <!--</ScrollView>-->
 </FrameLayout>

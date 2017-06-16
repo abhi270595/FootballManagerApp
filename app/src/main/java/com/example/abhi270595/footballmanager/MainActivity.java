@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,15 +61,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Football Manager");
+
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        studentList = new ArrayList<Student>();
+        /*studentList = new ArrayList<Student>();
 
-        loadData(current_page);
+        loadData(current_page);*/
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        /*mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
+*/
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_floating_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // By default, we add 10 objects for first time.
+    /*// By default, we add 10 objects for first time.
     private void loadData(int current_page) {
 
         // I have not used current page for showing demo, if u use a webservice
@@ -122,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    }
+    }*/
     // adding 10 object creating dymically to arraylist and updating recyclerview when ever we reached last item
-    private void loadMoreData(int current_page) {
+    /*private void loadMoreData(int current_page) {
 
         // I have not used current page for showing demo, if u use a webservice
         // then it is useful for every call request
@@ -142,5 +148,23 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
 
     }
+*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuItemSelected = item.getItemId();
+        switch (menuItemSelected) {
+            case R.id.action_search : Toast.makeText(getApplicationContext(), "search menu clicked", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_settings : Toast.makeText(getApplicationContext(), "settings menu clicked", Toast.LENGTH_LONG).show();
+                return true;
+            default:return super.onOptionsItemSelected(item);
+        }
+
+    }
 }
