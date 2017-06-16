@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,11 +41,6 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
-                    Intent myIntent = new Intent(MainActivity.this, CreateTournamentActivity.class);
-                    MainActivity.this.startActivity(myIntent);
-                    return true;
-                case R.id.navigation_create:
-                    mTextMessage.setText(R.string.title_create);
                     return true;
                 case R.id.navigation_archive:
                     mTextMessage.setText(R.string.title_archive);
@@ -97,6 +94,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_floating_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Click action
+                Intent intent = new Intent(MainActivity.this, CreateTournamentActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
