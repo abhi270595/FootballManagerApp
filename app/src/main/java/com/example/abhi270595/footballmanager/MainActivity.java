@@ -1,6 +1,7 @@
 package com.example.abhi270595.footballmanager;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +16,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.abhi270595.footballmanager.utilities.NetworkUtils;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +47,17 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
+                    mTextMessage.setText("");
                     return true;
                 case R.id.navigation_archive:
-                    mTextMessage.setText(R.string.title_archive);
+                    mTextMessage.setText("");
+                    new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                    mTextMessage.setText("");
+                    new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
+
                     return true;
             }
             return false;
@@ -60,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
@@ -149,6 +160,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 */
+
+    public class NetworkAsyncTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected String doInBackground(URL... params) {
+            URL networkUrl = params[0];
+            String queryResults = null;
+
+            try {
+                queryResults = NetworkUtils.getResponseFromHttpUrl(networkUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return queryResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s != null && !s.equals("")) {
+                mTextMessage.setText(s);
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -159,11 +194,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemSelected = item.getItemId();
         switch (menuItemSelected) {
-            case R.id.action_search : Toast.makeText(getApplicationContext(), "search menu clicked", Toast.LENGTH_LONG).show();
+            case R.id.action_search: //new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
+                Toast.makeText(getApplicationContext(), "search menu clicked", Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.action_settings : Toast.makeText(getApplicationContext(), "settings menu clicked", Toast.LENGTH_LONG).show();
+            case R.id.action_settings:
+                Toast.makeText(getApplicationContext(), "settings menu clicked", Toast.LENGTH_LONG).show();
                 return true;
-            default:return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
     }
