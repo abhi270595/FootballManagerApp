@@ -18,6 +18,10 @@ import android.widget.Toast;
 
 import com.example.abhi270595.footballmanager.utilities.NetworkUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -179,7 +183,21 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s != null && !s.equals("")) {
-                mTextMessage.setText(s);
+                try {
+                    JSONArray jsonArray = new JSONArray(s);
+                    /*for (int i=0; i<jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+
+                    }*/
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    mTextMessage.setText(jsonObject.getString("title"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //mTextMessage.setText(s);
             }
         }
     }

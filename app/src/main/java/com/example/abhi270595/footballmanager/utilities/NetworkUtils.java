@@ -19,7 +19,6 @@ final static String entity = "posts";
         Uri builtUri = Uri.parse(SERVICE_BASE_URL)
                 .buildUpon()
                 .appendPath(entity)
-                .appendPath(element)
                 .build();
 
         URL url = null;
