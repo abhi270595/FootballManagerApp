@@ -1,5 +1,6 @@
 package com.example.abhi270595.footballmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mTextMessage.setText(R.string.title_home);
+                    Intent myIntent = new Intent(MainActivity.this, CreateTournamentActivity.class);
+                    MainActivity.this.startActivity(myIntent);
                     return true;
                 case R.id.navigation_create:
                     mTextMessage.setText(R.string.title_create);
