@@ -31,7 +31,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    //private TextView mTextMessage;
 
     private ProgressBar mProgressBar;
 
@@ -56,14 +56,15 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
-                    mTextMessage.setText("");
+                    //mTextMessage.setText("");
                     return true;
                 case R.id.navigation_archive:
-                    mTextMessage.setText("");
-                    new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
+                    //mTextMessage.setText("");
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    //new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText("");
+                    //mTextMessage.setText("");
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
 
                     return true;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Football Manager");
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        //mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -199,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
 
             mProgressBar.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
             if (s != null && !s.equals("")) {
 
                 int length;
@@ -211,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] tour_name_string_array = new String[jsonArr1.length()];
                 String[] tour_description_string_array = new String[jsonArr1.length()];
-                System.out.println(s);
 
                 try {
                     JSONArray jsonArr = new JSONArray(s);
@@ -219,9 +220,7 @@ public class MainActivity extends AppCompatActivity {
                     for(int i = 0; i<jsonArr.length(); i++) {
                         JSONObject jsonObject = jsonArr.getJSONObject(i);
                         tour_name_string_array[i] = jsonObject.getString("title");
-                        System.out.println(tour_name_string_array);
                         tour_description_string_array[i] = jsonObject.getString("body");
-                        System.out.println(tour_description_string_array);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
