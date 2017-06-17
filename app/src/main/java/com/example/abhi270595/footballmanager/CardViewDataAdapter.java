@@ -1,5 +1,6 @@
 package com.example.abhi270595.footballmanager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -24,15 +25,15 @@ public class CardViewDataAdapter extends
 
     //private List<Student> stList;
     private String jsonResult;
-    private String[] tour_name_string_array;
-    private String[] tour_description_string_array;
+    private ArrayList<String> tour_name_string_array;
+    private ArrayList<String> tour_description_string_array;
 
     public CardViewDataAdapter() {
         //this.stList = students;
 
     }
 
-    public void setResultData(String result, String[] name, String[] description) {
+    public void setResultData(String result, ArrayList<String> name, ArrayList<String> description) {
         jsonResult = result;
         tour_name_string_array = name;
         tour_description_string_array = description;
@@ -58,9 +59,9 @@ public class CardViewDataAdapter extends
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.name.setText(tour_name_string_array[position]);
+        viewHolder.name.setText(tour_name_string_array.get(position));
 
-        viewHolder.description.setText(tour_description_string_array[position]);
+        viewHolder.description.setText(tour_description_string_array.get(position));
 
         //viewHolder.singlestudent=stList.get(position);
 
@@ -69,7 +70,7 @@ public class CardViewDataAdapter extends
     @Override
     public int getItemCount() {
         if (tour_name_string_array == null) return 0;
-        return tour_name_string_array.length;
+        return tour_name_string_array.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

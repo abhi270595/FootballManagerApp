@@ -7,9 +7,11 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,24 +31,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-
-    //private TextView mTextMessage;
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
 
     private ProgressBar mProgressBar;
-
+    private ArrayList<String> tour_name_string_array = new ArrayList<String>();
+    private ArrayList<String> tour_description_string_array = new ArrayList<String>();
     private RecyclerView mRecyclerView;
     private CardViewDataAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-
-    //private List<Student> studentList;
-
-    // on scroll
-
-    /*private static int current_page = 1;
-
-    private int ival = 1;
-    private int loadLimit = 10;*/
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -56,15 +48,11 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
-                    //mTextMessage.setText("");
                     return true;
                 case R.id.navigation_archive:
-                    //mTextMessage.setText("");
                     mRecyclerView.setVisibility(View.INVISIBLE);
-                    //new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_notifications:
-                    //mTextMessage.setText("");
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
 
                     return true;
@@ -83,47 +71,22 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Football Manager");
 
-        //mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        //studentList = new ArrayList<Student>();
-
-        //loadData(current_page);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
-
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
-        // use a linear layout manager
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        // create an Object for Adapter
         mAdapter = new CardViewDataAdapter();
 
-        // set the adapter object to the Recyclerview
         mRecyclerView.setAdapter(mAdapter);
 
-       /* mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(
-                mLayoutManager) {
-            @Override
-            public void onLoadMore(int current_page) {
-                // do somthing...
 
-                loadMoreData(current_page);
-
-            }
-
-        });*/
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_floating_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Click action
                 Intent intent = new Intent(MainActivity.this, CreateTournamentActivity.class);
                 startActivity(intent);
             }
@@ -135,42 +98,6 @@ public class MainActivity extends AppCompatActivity {
         new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
 
     }
-
-    // By default, we add 10 objects for first time.
-    /*private void loadData(int current_page) {
-
-        // I have not used current page for showing demo, if u use a webservice
-        // then it is useful for every call request
-
-        for (int i = ival; i <= loadLimit; i++) {
-            Student st = new Student("Student " + i, "androidstudent" + i
-                    + "@gmail.com", false);
-
-            studentList.add(st);
-            ival++;
-
-        }
-
-    }*/
-    // adding 10 object creating dymically to arraylist and updating recyclerview when ever we reached last item
-    /*private void loadMoreData(int current_page) {
-
-        // I have not used current page for showing demo, if u use a webservice
-        // then it is useful for every call request
-
-        loadLimit = ival + 10;
-
-        for (int i = ival; i <= loadLimit; i++) {
-            Student st = new Student("Student " + i, "androidstudent" + i
-                    + "@gmail.com", false);
-
-            studentList.add(st);
-            ival++;
-        }
-
-        mAdapter.notifyDataSetChanged();
-
-    }*/
 
     private void showRecyclerView() {
         mRecyclerView.setVisibility(View.VISIBLE);
@@ -203,49 +130,22 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setVisibility(View.VISIBLE);
             if (s != null && !s.equals("")) {
 
-                int length;
-                JSONArray jsonArr1 = null;
-                try {
-                    jsonArr1 = new JSONArray(s);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                String[] tour_name_string_array = new String[jsonArr1.length()];
-                String[] tour_description_string_array = new String[jsonArr1.length()];
+                //String[] tour_description_string_array = new String[jsonArr1.length()];
 
                 try {
                     JSONArray jsonArr = new JSONArray(s);
                     System.out.println(jsonArr.length());
                     for(int i = 0; i<jsonArr.length(); i++) {
                         JSONObject jsonObject = jsonArr.getJSONObject(i);
-                        tour_name_string_array[i] = jsonObject.getString("title");
-                        tour_description_string_array[i] = jsonObject.getString("body");
+                        tour_name_string_array.add(jsonObject.getString("title"));
+                        tour_description_string_array.add(jsonObject.getString("body"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
                 mAdapter.setResultData(s, tour_name_string_array, tour_description_string_array);
 
-                // json formatting
-                /*try {
-                    showRecyclerView();
-                    JSONArray jsonArray = new JSONArray(s);
-                    *//*for (int i=0; i<jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-
-                    }*//*
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    //mTextMessage.setText(jsonObject.getString("title"));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
-
-                //mTextMessage.setText(s);
             } else {
                 //TODO logic when there is no json data
             }
@@ -255,7 +155,55 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.requestFocus();
+            }
+        });
+
+        /*MenuItemCompat.setOnActionExpandListener(item,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem item) {
+                        adapter.setFilter(mCountryModel);
+                        return true; // Return true to collapse action view
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem item) {
+                        return true; // Return true to expand action view
+                    }
+                });*/
         return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //final String[][] filteredModelList = filter(, newText);
+
+        //mAdapter.setResultData();
+        return true;
+    }
+
+    /*private String[][] filter( models, String query) {
+        query = query.toLowerCase();final List<CountryModel> filteredModelList = new ArrayList<>();
+        for (CountryModel model : models) {
+            final String text = model.getName().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(model);
+            }
+        }
+        return filteredModelList;
+    }*/
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
 
     @Override
