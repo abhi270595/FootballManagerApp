@@ -3,6 +3,7 @@ package com.example.abhi270595.footballmanager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
@@ -35,17 +36,17 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private CardViewDataAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
-    private List<Student> studentList;
+    //private List<Student> studentList;
 
     // on scroll
 
-    private static int current_page = 1;
+    /*private static int current_page = 1;
 
     private int ival = 1;
-    private int loadLimit = 10;
+    private int loadLimit = 10;*/
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,10 +78,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_indicator);
-
-        new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Football Manager");
@@ -89,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        studentList = new ArrayList<Student>();
+        //studentList = new ArrayList<Student>();
 
-        loadData(current_page);
+        //loadData(current_page);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -99,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         // use a linear layout manager
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // create an Object for Adapter
-        mAdapter = new CardViewDataAdapter(studentList);
+        mAdapter = new CardViewDataAdapter();
 
         // set the adapter object to the Recyclerview
         mRecyclerView.setAdapter(mAdapter);
@@ -130,10 +127,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_indicator);
+
+        showRecyclerView();
+        new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
+
     }
 
     // By default, we add 10 objects for first time.
-    private void loadData(int current_page) {
+    /*private void loadData(int current_page) {
 
         // I have not used current page for showing demo, if u use a webservice
         // then it is useful for every call request
@@ -147,9 +150,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    }
+    }*/
     // adding 10 object creating dymically to arraylist and updating recyclerview when ever we reached last item
-    private void loadMoreData(int current_page) {
+    /*private void loadMoreData(int current_page) {
 
         // I have not used current page for showing demo, if u use a webservice
         // then it is useful for every call request
@@ -166,8 +169,11 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter.notifyDataSetChanged();
 
-    }
+    }*/
 
+    private void showRecyclerView() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
 
     public class NetworkAsyncTask extends AsyncTask<URL, Void, String> {
 
@@ -194,21 +200,55 @@ public class MainActivity extends AppCompatActivity {
 
             mProgressBar.setVisibility(View.INVISIBLE);
             if (s != null && !s.equals("")) {
+
+                int length;
+                JSONArray jsonArr1 = null;
                 try {
-                    JSONArray jsonArray = new JSONArray(s);
-                    /*for (int i=0; i<jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-
-                    }*/
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    mTextMessage.setText(jsonObject.getString("title"));
-
+                    jsonArr1 = new JSONArray(s);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+                String[] tour_name_string_array = new String[jsonArr1.length()];
+                String[] tour_description_string_array = new String[jsonArr1.length()];
+                System.out.println(s);
+
+                try {
+                    JSONArray jsonArr = new JSONArray(s);
+                    System.out.println(jsonArr.length());
+                    for(int i = 0; i<jsonArr.length(); i++) {
+                        JSONObject jsonObject = jsonArr.getJSONObject(i);
+                        tour_name_string_array[i] = jsonObject.getString("title");
+                        System.out.println(tour_name_string_array);
+                        tour_description_string_array[i] = jsonObject.getString("body");
+                        System.out.println(tour_description_string_array);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                mAdapter.setResultData(s, tour_name_string_array, tour_description_string_array);
+
+                // json formatting
+                /*try {
+                    showRecyclerView();
+                    JSONArray jsonArray = new JSONArray(s);
+                    *//*for (int i=0; i<jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+
+                    }*//*
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    //mTextMessage.setText(jsonObject.getString("title"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }*/
+
                 //mTextMessage.setText(s);
+            } else {
+                //TODO logic when there is no json data
             }
         }
     }
