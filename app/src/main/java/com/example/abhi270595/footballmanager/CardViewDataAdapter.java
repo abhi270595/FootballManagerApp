@@ -85,19 +85,17 @@ public class CardViewDataAdapter extends
 
             name = (TextView) itemLayoutView.findViewById(R.id.recycler_tournament_name);
             description = (TextView) itemLayoutView.findViewById(R.id.recycler_tournament_description);
-            /*itemLayoutView.setOnClickListener(new OnClickListener() {
+            itemLayoutView.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
                     Toast.makeText(
-                            v.getContext(),
-                            "Data : \n" + singlestudent.getName() + " \n"
-                                    + singlestudent.getEmailId(),
+                            v.getContext(), name.getText() + "" + description.getText() ,
                             Toast.LENGTH_SHORT).show();
 
                 }
-            });*/
+            });
 
         }
 
