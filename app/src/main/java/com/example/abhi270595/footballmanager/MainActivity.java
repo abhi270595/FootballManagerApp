@@ -184,22 +184,25 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        //final String[][] filteredModelList = filter(, newText);
-
-        //mAdapter.setResultData();
+        filter(newText);
         return true;
     }
 
-    /*private String[][] filter( models, String query) {
-        query = query.toLowerCase();final List<CountryModel> filteredModelList = new ArrayList<>();
-        for (CountryModel model : models) {
-            final String text = model.getName().toLowerCase();
+    private void filter(String query) {
+        query = query.toLowerCase();
+        final ArrayList<String> filteredName = new ArrayList<>();
+        final ArrayList<String> filteredDescription = new ArrayList<>();
+
+        for (int j=0; j<tour_name_string_array.size(); j++) {
+            final String text = tour_name_string_array.get(j).toLowerCase();
             if (text.contains(query)) {
-                filteredModelList.add(model);
+                filteredName.add(tour_name_string_array.get(j));
+                filteredDescription.add(tour_description_string_array.get(j));
             }
         }
-        return filteredModelList;
-    }*/
+        mAdapter.setResultData(null, filteredName, filteredDescription);
+        //filteredModelList;
+    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
