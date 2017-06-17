@@ -2,6 +2,7 @@ package com.example.abhi270595.footballmanager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start the Signup activity
+
                 Intent myIntent = new Intent(LoginActivity.this, SignupActivity.class);
                 LoginActivity.this.startActivity(myIntent);
             }
@@ -83,6 +85,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         mEmailSignInButton.setEnabled(true);
         // Start the Main activity
+        SharedPreferences loginSettings = getApplicationContext().getSharedPreferences("Authentication", 0);
+        SharedPreferences.Editor editor = loginSettings.edit();
+        editor.putBoolean("isLoggedIn", true);
+        editor.commit();
         Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
         LoginActivity.this.startActivity(myIntent);
     }

@@ -1,6 +1,7 @@
 package com.example.abhi270595.footballmanager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -66,6 +67,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences loginSettings = getApplicationContext().getSharedPreferences("Authentication", 0);
+        /*SharedPreferences.Editor editor = loginSettings.edit();
+        editor.putBoolean("isLoggedIn", false);
+        editor.commit();*/
+
+        if (!loginSettings.getBoolean("isLoggedIn", true)) {
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
