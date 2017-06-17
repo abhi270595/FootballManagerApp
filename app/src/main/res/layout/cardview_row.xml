@@ -9,35 +9,38 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="153dp"
         android:layout_margin="5dp" >
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
-            android:src="@mipmap/fallback" />
+            android:src="@mipmap/fallback" />-->
 
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/recycler_tournament_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/image"
+            android:layout_height="108dp"
             android:gravity="center"
             android:text="name"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:background="@android:color/holo_blue_bright"
+            />
 
         <TextView
-            android:id="@+id/tvEmailId"
+            android:id="@+id/recycler_tournament_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvName"
+            android:layout_height="45dp"
+            android:layout_below="@id/recycler_tournament_name"
             android:gravity="center"
             android:text="email"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+
+            />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

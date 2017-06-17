@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
+
+    private ProgressBar mProgressBar;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -74,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_indicator);
+
         new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
@@ -84,11 +89,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        /*studentList = new ArrayList<Student>();
+        studentList = new ArrayList<Student>();
 
-        loadData(current_page);*/
+        loadData(current_page);
 
-        /*mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         // set the adapter object to the Recyclerview
         mRecyclerView.setAdapter(mAdapter);
 
-        mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(
+       /* mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(
                 mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
@@ -115,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-        });
-*/
+        });*/
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_floating_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*// By default, we add 10 objects for first time.
+    // By default, we add 10 objects for first time.
     private void loadData(int current_page) {
 
         // I have not used current page for showing demo, if u use a webservice
@@ -143,9 +147,9 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    }*/
+    }
     // adding 10 object creating dymically to arraylist and updating recyclerview when ever we reached last item
-    /*private void loadMoreData(int current_page) {
+    private void loadMoreData(int current_page) {
 
         // I have not used current page for showing demo, if u use a webservice
         // then it is useful for every call request
@@ -163,9 +167,14 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
 
     }
-*/
+
 
     public class NetworkAsyncTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
 
         @Override
         protected String doInBackground(URL... params) {
@@ -182,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+
+            mProgressBar.setVisibility(View.INVISIBLE);
             if (s != null && !s.equals("")) {
                 try {
                     JSONArray jsonArray = new JSONArray(s);

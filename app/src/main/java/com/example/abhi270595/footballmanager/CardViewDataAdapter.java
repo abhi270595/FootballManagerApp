@@ -41,15 +41,14 @@ public class CardViewDataAdapter extends
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.tvName.setText(stList.get(position).getName());
+        viewHolder.name.setText(stList.get(position).getName());
 
-        viewHolder.tvEmailId.setText(stList.get(position).getEmailId());
+        viewHolder.description.setText(stList.get(position).getEmailId());
 
         viewHolder.singlestudent=stList.get(position);
 
     }
 
-    // Return the size arraylist
     @Override
     public int getItemCount() {
         return stList.size();
@@ -57,18 +56,16 @@ public class CardViewDataAdapter extends
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvName;
-        public TextView tvEmailId;
+        public TextView name;
+        public TextView description;
 
         public Student singlestudent;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
 
-            tvName = (TextView) itemLayoutView.findViewById(R.id.tvName);
-
-            tvEmailId = (TextView) itemLayoutView.findViewById(R.id.tvEmailId);
-            // Onclick event for the row to show the data in toast
+            name = (TextView) itemLayoutView.findViewById(R.id.recycler_tournament_name);
+            description = (TextView) itemLayoutView.findViewById(R.id.recycler_tournament_description);
             itemLayoutView.setOnClickListener(new OnClickListener() {
 
                 @Override
