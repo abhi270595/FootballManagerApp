@@ -12,13 +12,33 @@ import java.util.Scanner;
 public class NetworkUtils {
     final static String SERVICE_BASE_URL =
             "https://jsonplaceholder.typicode.com/";
-final static String entity = "posts";
+final static String postsEntity = "posts";
     final static String element = "1";
+    final static String userEntity = "users";
+
+
 
     public static URL buildUrl() {
         Uri builtUri = Uri.parse(SERVICE_BASE_URL)
                 .buildUpon()
-                .appendPath(entity)
+                .appendPath(postsEntity)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildAuthenticationURL() {
+        Uri builtUri = Uri.parse(SERVICE_BASE_URL)
+                .buildUpon()
+                .appendPath(userEntity)
+                .appendPath(element)
                 .build();
 
         URL url = null;

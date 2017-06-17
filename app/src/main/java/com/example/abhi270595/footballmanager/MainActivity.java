@@ -1,5 +1,6 @@
 package com.example.abhi270595.footballmanager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private ProgressBar mProgressBar;
     private ArrayList<String> tour_name_string_array = new ArrayList<String>();
@@ -62,6 +64,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
     };
+
+    @Override
+    public void onBackPressed() {
+
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 try {
                     JSONArray jsonArr = new JSONArray(s);
                     System.out.println(jsonArr.length());
-                    for(int i = 0; i<jsonArr.length(); i++) {
+                    for (int i = 0; i < jsonArr.length(); i++) {
                         JSONObject jsonObject = jsonArr.getJSONObject(i);
                         tour_name_string_array.add(jsonObject.getString("title"));
                         tour_description_string_array.add(jsonObject.getString("body"));
@@ -204,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         final ArrayList<String> filteredName = new ArrayList<>();
         final ArrayList<String> filteredDescription = new ArrayList<>();
 
-        for (int j=0; j<tour_name_string_array.size(); j++) {
+        for (int j = 0; j < tour_name_string_array.size(); j++) {
             final String text = tour_name_string_array.get(j).toLowerCase();
             if (text.contains(query)) {
                 filteredName.add(tour_name_string_array.get(j));
