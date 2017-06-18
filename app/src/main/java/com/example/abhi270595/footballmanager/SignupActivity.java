@@ -2,6 +2,8 @@ package com.example.abhi270595.footballmanager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,6 +11,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.abhi270595.footballmanager.utilities.NetworkUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Created by Abhishek Waghela on 2/6/2017.
@@ -19,6 +30,7 @@ public class SignupActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String name;
+    private ProgressDialog progressDialog;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -41,7 +53,8 @@ public class SignupActivity extends AppCompatActivity {
         mEmailSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptSignup();
+                //TODO : change the service
+                new SignupAsyncTask().execute(NetworkUtils.buildAuthenticationURL());
             }
         });
 
@@ -57,35 +70,68 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public void attemptSignup() {
 
-        mEmailSignUpButton.setEnabled(false);
+    public class SignupAsyncTask extends AsyncTask<URL, Void, String> {
 
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating your Account...");
-        progressDialog.show();
+        @Override
+        protected void onPreExecute() {
+            mEmailSignUpButton.setEnabled(false);
+            progressDialog = new ProgressDialog(SignupActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Creating your account...");
+            progressDialog.show();
+        }
 
-        email = mEmailView.getText().toString();
-        password = mPasswordView.getText().toString();
-        name = mNameView.getText().toString();
+        @Override
+        protected String doInBackground(URL... params) {
+            URL networkUrl = params[0];
+            String queryResults = null;
 
-        // TODO: Implement your own authentication logic here.
+            try {
+                //TODO : hook it up with a post service not a get service
+                queryResults = NetworkUtils.getResponseFromHttpUrl(networkUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return queryResults;
+        }
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
+        @Override
+        protected void onPostExecute(String s) {
+
+            progressDialog.dismiss();
+            mEmailSignUpButton.setEnabled(true);
+            if (s != null && !s.equals("")) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    email = mEmailView.getText().toString();
+                    password = mPasswordView.getText().toString();
+
+                    if (!email.equals(null) && email.equals(jsonObject.getString("username"))) {
                         onSignUpSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Account creation Failed :( ", Toast.LENGTH_SHORT).show();
                     }
-                }, 3000);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            } else {
+                //TODO logic when there is no json data
+            }
+        }
     }
 
     public void onSignUpSuccess() {
         mEmailSignUpButton.setEnabled(true);
-        finish();
+        SharedPreferences loginSettings = getApplicationContext().getSharedPreferences("Authentication", 0);
+        SharedPreferences.Editor editor = loginSettings.edit();
+        editor.putBoolean("isLoggedIn", true);
+        editor.commit();
+        Intent myIntent = new Intent(SignupActivity.this, MainActivity.class);
+        startActivity(myIntent);
     }
 }
