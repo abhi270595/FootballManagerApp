@@ -23,13 +23,13 @@ import org.json.JSONObject;
 public class CardViewDataAdapter extends
         RecyclerView.Adapter<CardViewDataAdapter.ViewHolder> {
 
-    //private List<Student> stList;
+
     private String jsonResult;
     private ArrayList<String> tour_name_string_array;
     private ArrayList<String> tour_description_string_array;
 
     public CardViewDataAdapter() {
-        //this.stList = students;
+
 
     }
 
@@ -78,7 +78,6 @@ public class CardViewDataAdapter extends
         public TextView name;
         public TextView description;
 
-        //public Student singlestudent;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
