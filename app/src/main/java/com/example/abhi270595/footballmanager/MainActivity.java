@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView mRecyclerView;
     private CardViewDataAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    private String mState = "";
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,14 +51,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    mState = "";
+                    invalidateOptionsMenu();
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_archive:
-                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    mState = "";
+                    invalidateOptionsMenu();
+                    new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_notifications:
-                    new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
-
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    mState = "HIDE_MENU";
+                    invalidateOptionsMenu();
                     return true;
             }
             return false;
@@ -180,6 +186,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         final MenuItem item = menu.findItem(R.id.action_search);
+
+        if (mState.equals("HIDE_MENU")) {
+            item.setVisible(false);
+        } else {
+            item.setVisible(true);
+        }
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchClickListener(new View.OnClickListener() {
