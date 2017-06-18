@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 case R.id.navigation_archive:
                     mState = "";
                     invalidateOptionsMenu();
-                    new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
+                    new ArchiveAsyncTask().execute(NetworkUtils.buildArchiveURL());
                     return true;
                 case R.id.navigation_notifications:
                     mRecyclerView.setVisibility(View.INVISIBLE);
@@ -132,11 +132,63 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
+
+    public class ArchiveAsyncTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(URL... params) {
+            URL networkUrl = params[0];
+            String queryResults = null;
+
+            try {
+                queryResults = NetworkUtils.getResponseFromHttpUrl(networkUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return queryResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            if (s != null && !s.equals("")) {
+                tour_name_string_array.clear();
+                tour_description_string_array.clear();
+                try {
+                    JSONArray jsonArr = new JSONArray(s);
+                    System.out.println(jsonArr.length());
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        JSONObject jsonObject = jsonArr.getJSONObject(i);
+                        tour_name_string_array.add(jsonObject.getString("name"));
+                        tour_description_string_array.add(jsonObject.getString("body"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                mAdapter.setResultData(s, tour_name_string_array, tour_description_string_array);
+
+            } else {
+                //TODO logic when there is no json data
+            }
+        }
+    }
+
+
     public class NetworkAsyncTask extends AsyncTask<URL, Void, String> {
 
         @Override
         protected void onPreExecute() {
             mProgressBar.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -160,7 +212,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             if (s != null && !s.equals("")) {
 
                 //String[] tour_description_string_array = new String[jsonArr1.length()];
-
+                tour_name_string_array.clear();
+                tour_description_string_array.clear();
                 try {
                     JSONArray jsonArr = new JSONArray(s);
                     System.out.println(jsonArr.length());

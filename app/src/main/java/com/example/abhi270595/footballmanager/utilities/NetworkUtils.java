@@ -15,6 +15,7 @@ public class NetworkUtils {
 final static String postsEntity = "posts";
     final static String element = "1";
     final static String userEntity = "users";
+    final static String commentsEntity = "comments";
 
 
 
@@ -39,6 +40,22 @@ final static String postsEntity = "posts";
                 .buildUpon()
                 .appendPath(userEntity)
                 .appendPath(element)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildArchiveURL() {
+        Uri builtUri = Uri.parse(SERVICE_BASE_URL)
+                .buildUpon()
+                .appendPath(commentsEntity)
                 .build();
 
         URL url = null;
