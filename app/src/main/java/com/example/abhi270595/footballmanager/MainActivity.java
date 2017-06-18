@@ -251,8 +251,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             case R.id.action_search: //new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                 Toast.makeText(getApplicationContext(), "search menu clicked", Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.action_settings:
-                Toast.makeText(getApplicationContext(), "settings menu clicked", Toast.LENGTH_LONG).show();
+            case R.id.action_logout:
+                Toast.makeText(getApplicationContext(), "logout menu clicked", Toast.LENGTH_LONG).show();
+
+                new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Logout?")
+                        .setMessage("Are you sure you want to logout?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences loginSettings = getApplicationContext().getSharedPreferences("Authentication", 0);
+                                SharedPreferences.Editor editor = loginSettings.edit();
+                                editor.putBoolean("isLoggedIn", false);
+                                editor.commit();
+                                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(loginIntent);
+                            }
+                        }).setNegativeButton("No", null).show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
