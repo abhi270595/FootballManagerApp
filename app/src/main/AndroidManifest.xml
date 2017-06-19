@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.abhi270595.footballmanager" >
 
-
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -10,19 +9,19 @@
         android:icon="@mipmap/football"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MyMaterialTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main">
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".SignupActivity"
@@ -31,6 +30,10 @@
         <activity
             android:name=".CreateTournamentActivity"
             android:label="@string/title_activity_create_tournament" >
+        </activity>
+        <activity
+            android:name=".ParticularTournamentDetails"
+            android:label="@string/title_activity_particular_tournament_details" >
         </activity>
     </application>
 

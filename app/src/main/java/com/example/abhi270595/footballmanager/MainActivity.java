@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     public void onClick(String particularTournament) {
         Toast.makeText(getApplicationContext(), particularTournament, Toast.LENGTH_SHORT).show();
-        //Intent intentForTournamentDetails = new Intent(MainActivity.this, TournamentDetails.class);
-        //startActivity(intentForTournamentDetails);
+        Intent intentForTournamentDetails = new Intent(MainActivity.this, ParticularTournamentDetails.class);
+        startActivity(intentForTournamentDetails);
     }
 
     public class ArchiveAsyncTask extends AsyncTask<URL, Void, String> {
