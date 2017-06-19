@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,9 +29,15 @@ public class CardViewDataAdapter extends
     private ArrayList<String> tour_name_string_array;
     private ArrayList<String> tour_description_string_array;
 
-    public CardViewDataAdapter() {
+    private CardViewClickHandler mClickHandler;
 
+    public CardViewDataAdapter(CardViewClickHandler clickHandler) {
+        mClickHandler = clickHandler;
 
+    }
+
+    public interface CardViewClickHandler {
+        void onClick(String particularTournament);
     }
 
     public void setResultData(String result, ArrayList<String> name, ArrayList<String> description) {
@@ -73,7 +80,7 @@ public class CardViewDataAdapter extends
         return tour_name_string_array.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements OnClickListener{
 
         public TextView name;
         public TextView description;
@@ -92,11 +99,19 @@ public class CardViewDataAdapter extends
                     Toast.makeText(
                             v.getContext(), name.getText() + "" + description.getText() ,
                             Toast.LENGTH_SHORT).show();
-
                 }
             });
-
+            itemLayoutView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            String particularTournament = tour_name_string_array.get(adapterPosition);
+            mClickHandler.onClick(particularTournament);
+        }
+
+
 
     }
 

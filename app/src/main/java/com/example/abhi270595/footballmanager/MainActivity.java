@@ -1,5 +1,6 @@
 package com.example.abhi270595.footballmanager;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,7 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, CardViewDataAdapter.CardViewClickHandler{
 
     private ProgressBar mProgressBar;
     private ArrayList<String> tour_name_string_array = new ArrayList<String>();
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new CardViewDataAdapter();
+        mAdapter = new CardViewDataAdapter(this);
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -132,6 +133,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
+    public void onClick(String particularTournament) {
+        Toast.makeText(getApplicationContext(), particularTournament, Toast.LENGTH_SHORT).show();
+        //Intent intentForTournamentDetails = new Intent(MainActivity.this, TournamentDetails.class);
+        //startActivity(intentForTournamentDetails);
+    }
 
     public class ArchiveAsyncTask extends AsyncTask<URL, Void, String> {
 
