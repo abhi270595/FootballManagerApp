@@ -35,6 +35,10 @@
             android:name=".ParticularTournamentDetails"
             android:label="@string/title_activity_particular_tournament_details" >
         </activity>
+        <activity
+            android:name=".NotificationActivity"
+            android:label="@string/title_activity_notification" >
+        </activity>
     </application>
 
 </manifest>

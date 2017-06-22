@@ -61,11 +61,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     invalidateOptionsMenu();
                     new ArchiveAsyncTask().execute(NetworkUtils.buildArchiveURL());
                     return true;
-                case R.id.navigation_notifications:
-                    mRecyclerView.setVisibility(View.INVISIBLE);
-                    mState = "HIDE_MENU";
-                    invalidateOptionsMenu();
-                    return true;
             }
             return false;
         }
@@ -328,6 +323,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         }).setNegativeButton("No", null).show();
 
                 return true;
+            case R.id.action_notification:
+                Intent notificationIntent = new Intent(MainActivity.this, NotificationActivity.class);
+                startActivity(notificationIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }

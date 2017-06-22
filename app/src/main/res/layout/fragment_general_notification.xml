@@ -1,22 +1,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.abhi270595.footballmanager.FixtureFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <!--<TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="I will be showing fixtures here.."
-        android:layout_gravity="center"
-        />-->
+    tools:context="com.example.abhi270595.footballmanager.GeneralNotificationFragment">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fixture_Listview"
-        android:divider="@null"
-        >
+        android:id="@+id/fixture_Listview">
 
     </ListView>
 
@@ -26,5 +16,6 @@
         android:id="@+id/progress_indicator"
         android:layout_gravity="center"
         />
+
 
 </FrameLayout>
