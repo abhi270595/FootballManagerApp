@@ -2,6 +2,7 @@ package com.example.abhi270595.footballmanager;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FixtureFragment extends Fragment {
+public class FixtureFragment extends Fragment implements FixturesDataAdapter.FixtureViewClickHandler{
 
     private RecyclerView mRecyclerViewFixture;
     private FixturesDataAdapter fixtureAdapter;
@@ -44,6 +45,12 @@ public class FixtureFragment extends Fragment {
 
     public FixtureFragment() {
         // Required empty public constructor
+    }
+
+    public void onClick(String particularTournament) {
+        Toast.makeText(getContext(), particularTournament, Toast.LENGTH_SHORT).show();
+        Intent intentForTournamentDetails = new Intent(getActivity(), EditFixture.class);
+        startActivity(intentForTournamentDetails);
     }
 
 
@@ -70,7 +77,7 @@ public class FixtureFragment extends Fragment {
         mRecyclerViewFixture.setHasFixedSize(true);
         fixtureLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerViewFixture.setLayoutManager(fixtureLayoutManager);
-        fixtureAdapter = new FixturesDataAdapter();
+        fixtureAdapter = new FixturesDataAdapter(this);
         mRecyclerViewFixture.setAdapter(fixtureAdapter);
 
         return rootView;

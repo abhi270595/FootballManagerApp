@@ -39,6 +39,10 @@
             android:name=".NotificationActivity"
             android:label="@string/title_activity_notification" >
         </activity>
+        <activity
+            android:name=".EditFixture"
+            android:label="@string/title_activity_edit_fixture" >
+        </activity>
     </application>
 
 </manifest>

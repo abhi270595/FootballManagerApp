@@ -22,6 +22,17 @@ public class FixturesDataAdapter extends RecyclerView.Adapter<FixturesDataAdapte
     private ArrayList<String> date;
     private ArrayList<String> location;
 
+    private FixtureViewClickHandler mClickHandler;
+
+    public FixturesDataAdapter(FixtureViewClickHandler clickHandler) {
+        mClickHandler = clickHandler;
+
+    }
+
+    public interface FixtureViewClickHandler {
+        void onClick(String particularTournament);
+    }
+
 
     public void setResultData(String result, ArrayList<String> fixture, ArrayList<String> time1) {
         jsonResult = result;
@@ -63,7 +74,7 @@ public class FixturesDataAdapter extends RecyclerView.Adapter<FixturesDataAdapte
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder { //implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView fixtureTv;
         public TextView timeTv;
@@ -84,15 +95,15 @@ public class FixturesDataAdapter extends RecyclerView.Adapter<FixturesDataAdapte
                             Toast.LENGTH_SHORT).show();
                 }
             });
-            //itemLayoutView.setOnClickListener(this);
+            itemLayoutView.setOnClickListener(this);
         }
 
-        /*@Override
+        @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            String particularTournament = tour_name_string_array.get(adapterPosition);
-            mClickHandler.onClick(particularTournament);
-        }*/
+            String fix = fixtureBetweenTeams.get(adapterPosition);
+            mClickHandler.onClick(fix);
+        }
 
 
 
