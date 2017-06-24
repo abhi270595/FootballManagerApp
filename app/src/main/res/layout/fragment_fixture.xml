@@ -1,7 +1,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.abhi270595.footballmanager.FixtureFragment">
+    tools:context="com.example.abhi270595.footballmanager.FixtureFragment"
+    android:id="@+id/fixture_fragment"
+    >
+
 
     <!-- TODO: Update blank fragment layout -->
     <!--<TextView
@@ -11,20 +14,19 @@
         android:layout_gravity="center"
         />-->
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fixture_Listview"
-        android:divider="@null"
-        >
-
-    </ListView>
-
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/progress_indicator"
         android:layout_gravity="center"
         />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fixture_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:scrollbars="vertical" />
 
 </FrameLayout>

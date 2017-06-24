@@ -68,6 +68,25 @@ final static String postsEntity = "posts";
         return url;
     }
 
+
+    public static URL buildFixtureURL() {
+        Uri builtUri = Uri.parse(SERVICE_BASE_URL)
+                .buildUpon()
+                .appendPath(userEntity)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+
+
     public static URL buildStandingsURL() {
         Uri builtUri = Uri.parse(SERVICE_BASE_URL)
                 .buildUpon()

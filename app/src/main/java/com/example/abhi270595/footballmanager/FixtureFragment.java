@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +34,12 @@ import java.util.ArrayList;
  */
 public class FixtureFragment extends Fragment {
 
-    private ListView listView;
-    private TextView matchBetween;
+    private RecyclerView mRecyclerViewFixture;
+    private FixturesDataAdapter fixtureAdapter;
+    private LinearLayoutManager fixtureLayoutManager;
     private ProgressBar progressBar;
-    private ArrayList<String> matchList= new ArrayList<String>();
-    ArrayAdapter<String> adapter;
+    private ArrayList<String> fixturesBetween = new ArrayList<String>();
+    private ArrayList<String> time = new ArrayList<String>();
 
 
     public FixtureFragment() {
@@ -47,17 +50,12 @@ public class FixtureFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new FixtureAsyncTask().execute(NetworkUtils.buildSecondNotificationUrl());
+        new FixtureAsyncTask().execute(NetworkUtils.buildFixtureURL());
 
-
-
-        //new StandingsAsyncTask().execute(NetworkUtils.buildStandingsURL());
     }
 
     @Override
@@ -66,11 +64,14 @@ public class FixtureFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_fixture, container, false);
 
-        matchBetween = (TextView) rootView.findViewById(R.id.match_between);
-        listView = (ListView) rootView.findViewById(R.id.fixture_Listview);
+
         progressBar = (ProgressBar) rootView.findViewById(R.id.progress_indicator);
-        adapter = new ArrayAdapter<String>(getActivity(),R.layout.fixture_list,R.id.match_between,matchList);
-        listView.setAdapter(adapter);
+        mRecyclerViewFixture = (RecyclerView) rootView.findViewById(R.id.fixture_recycler_view);
+        mRecyclerViewFixture.setHasFixedSize(true);
+        fixtureLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mRecyclerViewFixture.setLayoutManager(fixtureLayoutManager);
+        fixtureAdapter = new FixturesDataAdapter();
+        mRecyclerViewFixture.setAdapter(fixtureAdapter);
 
         return rootView;
     }
@@ -79,7 +80,6 @@ public class FixtureFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            listView.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -100,20 +100,23 @@ public class FixtureFragment extends Fragment {
         protected void onPostExecute(String s) {
 
             progressBar.setVisibility(View.INVISIBLE);
-            listView.setVisibility(View.VISIBLE);
+
             if (s != null && !s.equals("")) {
 
                 //String[] tour_description_string_array = new String[jsonArr1.length()];
 
                 try {
-                    adapter.clear();
-                    matchList.clear();
+                    fixturesBetween.clear();
+                    time.clear();
                     JSONArray jsonArray = new JSONArray(s);
                     for (int i = 0; i< jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        matchList.add(jsonObject.getString("body"));
+                        fixturesBetween.add(jsonObject.getString("name"));
+                        time.add(jsonObject.getString("username"));
                     }
 
+                    //set the data
+                    fixtureAdapter.setResultData(s, fixturesBetween, time);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

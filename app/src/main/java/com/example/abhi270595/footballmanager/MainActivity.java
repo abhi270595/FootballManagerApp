@@ -10,6 +10,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -63,21 +64,21 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 case R.id.navigation_home:
                     mState = "";
                     invalidateOptionsMenu();
-                    mRecyclerViewRequests.setVisibility(View.INVISIBLE);
+                    //mRecyclerViewRequests.setVisibility(View.INVISIBLE);
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_archive:
                     mState = "";
                     invalidateOptionsMenu();
-                    mRecyclerViewRequests.setVisibility(View.INVISIBLE);
+                    //mRecyclerViewRequests.setVisibility(View.INVISIBLE);
                     new ArchiveAsyncTask().execute(NetworkUtils.buildArchiveURL());
                     return true;
                 case R.id.navigation_requests:
                     mState = "HIDE_MENU";
                     invalidateOptionsMenu();
-                    /*FragmentManager manager1 = getSupportFragmentManager();
-                    manager1.beginTransaction().replace(R.id.content, new NotificationsFragment()).commit();*/
                     mRecyclerView.setVisibility(View.INVISIBLE);
+                    /*FragmentManager manager1 = getSupportFragmentManager();
+                    manager1.beginTransaction().replace(R.id.content, new FixtureFragment()).commit();*/
                     new RequestsAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
             }
