@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,7 +44,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView mRecyclerView;
     private CardViewDataAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+    // for requests recycler view
+    private RecyclerView mRecyclerViewRequests;
+    private RequestsDataAdapter requestAdapter;
+    private LinearLayoutManager requestLayoutManager;
+    private ArrayList<String> teamName =  new ArrayList<String>();
+
     private String mState = "";
+
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -54,11 +63,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 case R.id.navigation_home:
                     mState = "";
                     invalidateOptionsMenu();
+                    mRecyclerViewRequests.setVisibility(View.INVISIBLE);
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_archive:
                     mState = "";
                     invalidateOptionsMenu();
+                    mRecyclerViewRequests.setVisibility(View.INVISIBLE);
                     new ArchiveAsyncTask().execute(NetworkUtils.buildArchiveURL());
                     return true;
                 case R.id.navigation_requests:
@@ -66,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     invalidateOptionsMenu();
                     /*FragmentManager manager1 = getSupportFragmentManager();
                     manager1.beginTransaction().replace(R.id.content, new NotificationsFragment()).commit();*/
+                    mRecyclerView.setVisibility(View.INVISIBLE);
+                    new RequestsAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
             }
             return false;
@@ -113,6 +126,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         mRecyclerView.setAdapter(mAdapter);
 
+        // For requests recycler view
+        mRecyclerViewRequests = (RecyclerView) findViewById(R.id.request_recycler_view);
+        mRecyclerViewRequests.setHasFixedSize(true);
+        requestLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerViewRequests.setLayoutManager(requestLayoutManager);
+        requestAdapter = new RequestsDataAdapter();
+
+        mRecyclerViewRequests.setAdapter(requestAdapter);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.create_floating_button);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     private void showRecyclerView() {
         mRecyclerView.setVisibility(View.VISIBLE);
+        mRecyclerViewRequests.setVisibility(View.INVISIBLE);
     }
 
     public void onClick(String particularTournament) {
@@ -188,6 +211,55 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         }
     }
+
+    public class RequestsAsyncTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mRecyclerViewRequests.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(URL... params) {
+            URL networkUrl = params[0];
+            String queryResults = null;
+
+            try {
+                queryResults = NetworkUtils.getResponseFromHttpUrl(networkUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return queryResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            mProgressBar.setVisibility(View.INVISIBLE);
+            mRecyclerViewRequests.setVisibility(View.VISIBLE);
+            if (s != null && !s.equals("")) {
+
+                teamName.clear();
+                try {
+                    JSONArray jsonArr = new JSONArray(s);
+                    System.out.println(jsonArr.length());
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        JSONObject jsonObject = jsonArr.getJSONObject(i);
+                        teamName.add(jsonObject.getString("title"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                requestAdapter.setResultData(s, teamName);
+
+            } else {
+                //TODO logic when there is no json data
+            }
+        }
+    }
+
 
 
     public class NetworkAsyncTask extends AsyncTask<URL, Void, String> {
