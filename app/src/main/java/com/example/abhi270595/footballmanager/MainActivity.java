@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,19 +65,24 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 case R.id.navigation_home:
                     mState = "";
                     invalidateOptionsMenu();
-                    //mRecyclerViewRequests.setVisibility(View.INVISIBLE);
+                    mRecyclerView.setLayoutParams(
+                            new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_archive:
                     mState = "";
                     invalidateOptionsMenu();
-                    //mRecyclerViewRequests.setVisibility(View.INVISIBLE);
+                    mRecyclerView.setLayoutParams(
+                            new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     new ArchiveAsyncTask().execute(NetworkUtils.buildArchiveURL());
                     return true;
                 case R.id.navigation_requests:
                     mState = "HIDE_MENU";
                     invalidateOptionsMenu();
                     mRecyclerView.setVisibility(View.INVISIBLE);
+                    ViewGroup.LayoutParams params=mRecyclerView.getLayoutParams();
+                    params.height=0;
+                    mRecyclerView.setLayoutParams(params);
                     /*FragmentManager manager1 = getSupportFragmentManager();
                     manager1.beginTransaction().replace(R.id.content, new FixtureFragment()).commit();*/
                     new RequestsAsyncTask().execute(NetworkUtils.buildUrl());
