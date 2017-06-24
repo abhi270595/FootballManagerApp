@@ -67,9 +67,9 @@ public class EditFixture extends AppCompatActivity {
         });
 
         fixtureDate = (EditText) findViewById(R.id.fixture_date);
-        fixtureDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        fixtureDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onClick(View v) {
                 Calendar mcurrentDate = Calendar.getInstance();
                 int mYear = mcurrentDate.get(Calendar.YEAR);
                 int mMonth = mcurrentDate.get(Calendar.MONTH);
@@ -80,6 +80,7 @@ public class EditFixture extends AppCompatActivity {
 
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         fixtureDate.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
+
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.show();

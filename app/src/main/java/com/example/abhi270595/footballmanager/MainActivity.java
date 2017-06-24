@@ -38,6 +38,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//TODO : click listeners on the 2 request buttons
+//TODO : post requests in NetworkUtils
+//TODO : Date picker bug
+//TODO : all recycler view items refactoting
+
+
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, CardViewDataAdapter.CardViewClickHandler{
 
     private ProgressBar mProgressBar;
