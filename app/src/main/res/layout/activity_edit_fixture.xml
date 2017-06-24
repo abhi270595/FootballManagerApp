@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical"
+        android:layout_margin="16dp"
         >
         <TextView
             android:layout_width="match_parent"

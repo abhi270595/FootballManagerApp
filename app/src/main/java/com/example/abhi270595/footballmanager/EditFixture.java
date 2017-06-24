@@ -40,7 +40,7 @@ public class EditFixture extends AppCompatActivity {
 
     }
 
-    
+
 
 
     @Override
