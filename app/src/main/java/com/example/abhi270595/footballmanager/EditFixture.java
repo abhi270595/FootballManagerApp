@@ -27,17 +27,25 @@ public class EditFixture extends AppCompatActivity {
     private EditText fixtureDate;
     private TextView fixtureName;
     private Button update;
+    private String tour_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_fixture);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            tour_name = extras.getString("tournament_name");
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Edit Fixture..");
 
 
+        fixtureName = (TextView) findViewById(R.id.fixture_name);
+        fixtureName.setText(tour_name);
         fixtureLocation = (EditText) findViewById(R.id.fixture_location);
         fixtureTime = (EditText) findViewById(R.id.fixture_time);
         fixtureTime.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +86,6 @@ public class EditFixture extends AppCompatActivity {
             }
         });
 
-        fixtureName = (TextView) findViewById(R.id.fixture_name);
         update = (Button) findViewById(R.id.fixture_update);
         update.setOnClickListener(new View.OnClickListener() {
             @Override

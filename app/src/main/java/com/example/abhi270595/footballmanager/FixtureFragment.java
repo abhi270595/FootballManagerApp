@@ -50,6 +50,7 @@ public class FixtureFragment extends Fragment implements FixturesDataAdapter.Fix
     public void onClick(String particularTournament) {
         Toast.makeText(getContext(), particularTournament, Toast.LENGTH_SHORT).show();
         Intent intentForTournamentDetails = new Intent(getActivity(), EditFixture.class);
+        intentForTournamentDetails.putExtra("tournament_name", particularTournament);
         startActivity(intentForTournamentDetails);
     }
 
