@@ -1,17 +1,47 @@
 package com.example.abhi270595.footballmanager;
 
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 public class EditFixture extends AppCompatActivity {
+
+    private EditText fixtureTime;
+    private EditText fixtureLocation;
+    private EditText fixtureDate;
+    private TextView fixtureName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_fixture);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Edit Fixture..");
+
+
+        fixtureLocation = (EditText) findViewById(R.id.fixture_location);
+        fixtureTime = (EditText) findViewById(R.id.fixture_time);
+        fixtureDate = (EditText) findViewById(R.id.fixture_date);
+        fixtureName = (TextView) findViewById(R.id.fixture_name);
+
+
+
     }
+
+    
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -28,9 +58,9 @@ public class EditFixture extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+       /* if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
