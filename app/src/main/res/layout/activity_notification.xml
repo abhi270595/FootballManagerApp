@@ -16,17 +16,25 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabGravity="fill"/>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+        android:layout_height="wrap_content"
+        android:id="@+id/fixture_Listview"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:divider="@null"
+        >
+
+    </ListView>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_indicator"
+        android:layout_gravity="center"
+        />
+
 </android.support.design.widget.CoordinatorLayout>

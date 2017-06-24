@@ -1,5 +1,6 @@
 package com.example.abhi270595.footballmanager;
 
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 
 import android.support.v4.app.Fragment;
@@ -11,15 +12,31 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.abhi270595.footballmanager.utilities.NetworkUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
     private Toolbar toolbar;
-    private ViewPager viewPager;
+    private ListView listView;
+    private TextView matchBetween;
+    private ProgressBar progressBar;
+    private ArrayList<String> matchList= new ArrayList<String>();
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,49 +48,64 @@ public class NotificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Notifications");
 
-        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+        matchBetween = (TextView) findViewById(R.id.match_between);
+        listView = (ListView) findViewById(R.id.fixture_Listview);
+        progressBar = (ProgressBar) findViewById(R.id.progress_indicator);
+        adapter = new ArrayAdapter<String>(this, R.layout.fixture_list,R.id.match_between,matchList);
+        listView.setAdapter(adapter);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        new GeneralNotificationsAsyncTask().execute(NetworkUtils.buildSecondNotificationUrl());
     }
 
+    public class GeneralNotificationsAsyncTask extends AsyncTask<URL, Void, String> {
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new AcceptNotificationFragment(), "Requests");
-        adapter.addFragment(new GeneralNotificationFragment(), "Updates");
-        viewPager.setAdapter(adapter);
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
+        @Override
+        protected void onPreExecute() {
+            listView.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
+        protected String doInBackground(URL... params) {
+            URL networkUrl = params[0];
+            String queryResults = null;
+
+            try {
+                queryResults = NetworkUtils.getResponseFromHttpUrl(networkUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return queryResults;
         }
 
         @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
+        protected void onPostExecute(String s) {
 
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
+            progressBar.setVisibility(View.INVISIBLE);
+            listView.setVisibility(View.VISIBLE);
+            if (s != null && !s.equals("")) {
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+                //String[] tour_description_string_array = new String[jsonArr1.length()];
+
+                try {
+                    adapter.clear();
+                    matchList.clear();
+                    JSONArray jsonArray = new JSONArray(s);
+                    for (int i = 0; i< jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        matchList.add(jsonObject.getString("body"));
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            } else {
+                //TODO logic when there is no json data
+            }
         }
     }
 

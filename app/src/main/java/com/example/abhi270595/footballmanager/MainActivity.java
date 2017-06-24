@@ -61,6 +61,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     invalidateOptionsMenu();
                     new ArchiveAsyncTask().execute(NetworkUtils.buildArchiveURL());
                     return true;
+                case R.id.navigation_requests:
+                    mState = "HIDE_MENU";
+                    invalidateOptionsMenu();
+                    /*FragmentManager manager1 = getSupportFragmentManager();
+                    manager1.beginTransaction().replace(R.id.content, new NotificationsFragment()).commit();*/
+                    return true;
             }
             return false;
         }
