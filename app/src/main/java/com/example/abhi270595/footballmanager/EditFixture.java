@@ -40,9 +40,9 @@ public class EditFixture extends AppCompatActivity {
 
         fixtureLocation = (EditText) findViewById(R.id.fixture_location);
         fixtureTime = (EditText) findViewById(R.id.fixture_time);
-        fixtureTime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        fixtureTime.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onClick(View v) {
                 Calendar mcurrentTime = Calendar.getInstance();
                 int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
                 int minute = mcurrentTime.get(Calendar.MINUTE);
