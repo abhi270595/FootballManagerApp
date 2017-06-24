@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,17 @@ public class RequestsDataAdapter extends RecyclerView.Adapter<RequestsDataAdapte
 
     private String jsonResult;
     private ArrayList<String> teamName;
+
+    private RequestsClickHandler mClickHandler;
+
+    public RequestsDataAdapter(RequestsClickHandler clickHandler) {
+        mClickHandler = clickHandler;
+
+    }
+
+    public interface RequestsClickHandler {
+        void onRequestClick(String particularTournament, String acceptOrReject);
+    }
 
     public void setResultData(String result, ArrayList<String> teamName1) {
         jsonResult = result;
@@ -56,15 +68,22 @@ public class RequestsDataAdapter extends RecyclerView.Adapter<RequestsDataAdapte
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder { //implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView teamNameTv;
+        public Button acceptButton;
+        public Button rejectButton;
 
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
 
             teamNameTv = (TextView) itemLayoutView.findViewById(R.id.recycler_team_name);
+            acceptButton = (Button) itemLayoutView.findViewById(R.id.recycler_accept_button);
+            rejectButton = (Button) itemLayoutView.findViewById(R.id.recycler_reject_button);
+
+            acceptButton.setOnClickListener(this);
+            rejectButton.setOnClickListener(this);
             itemLayoutView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -75,15 +94,28 @@ public class RequestsDataAdapter extends RecyclerView.Adapter<RequestsDataAdapte
                             Toast.LENGTH_SHORT).show();
                 }
             });
-            //itemLayoutView.setOnClickListener(this);
+            itemLayoutView.setOnClickListener(this);
         }
 
-        /*@Override
+        @Override
         public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            String particularTournament = tour_name_string_array.get(adapterPosition);
-            mClickHandler.onClick(particularTournament);
-        }*/
+
+            if (v.equals(acceptButton)) {
+                int adapterPosition = getAdapterPosition();
+                String team = teamName.get(adapterPosition);
+                mClickHandler.onRequestClick(team, "yes");
+                teamName.remove(adapterPosition);
+                notifyItemRemoved(adapterPosition);
+                notifyItemRangeChanged(adapterPosition, teamName.size());
+            } else if (v.equals(rejectButton)) {
+                int adapterPosition = getAdapterPosition();
+                String team = teamName.get(adapterPosition);
+                mClickHandler.onRequestClick(team, "no");
+                teamName.remove(adapterPosition);
+                notifyItemRemoved(adapterPosition);
+                notifyItemRangeChanged(adapterPosition, teamName.size());
+            }
+        }
 
 
 

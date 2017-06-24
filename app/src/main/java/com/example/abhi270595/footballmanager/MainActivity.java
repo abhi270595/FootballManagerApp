@@ -1,5 +1,6 @@
 package com.example.abhi270595.footballmanager;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,9 +46,13 @@ import java.util.List;
 //TODO : all recycler view items refactoting
 
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, CardViewDataAdapter.CardViewClickHandler{
+public class MainActivity extends AppCompatActivity
+        implements SearchView.OnQueryTextListener,
+        CardViewDataAdapter.CardViewClickHandler,
+        RequestsDataAdapter.RequestsClickHandler {
 
     private ProgressBar mProgressBar;
+    private ProgressDialog progressDialog;
     private ArrayList<String> tour_name_string_array = new ArrayList<String>();
     private ArrayList<String> tour_description_string_array = new ArrayList<String>();
     private RecyclerView mRecyclerView;
@@ -132,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -145,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerViewRequests.setHasFixedSize(true);
         requestLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerViewRequests.setLayoutManager(requestLayoutManager);
-        requestAdapter = new RequestsDataAdapter();
+        requestAdapter = new RequestsDataAdapter(this);
 
         mRecyclerViewRequests.setAdapter(requestAdapter);
 
@@ -175,6 +181,63 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         Toast.makeText(getApplicationContext(), particularTournament, Toast.LENGTH_SHORT).show();
         Intent intentForTournamentDetails = new Intent(MainActivity.this, ParticularTournamentDetails.class);
         startActivity(intentForTournamentDetails);
+    }
+
+    public void onRequestClick(String particularTournament, String acceptOrReject) {
+        Toast.makeText(getApplicationContext(), particularTournament, Toast.LENGTH_SHORT).show();
+
+        new UpdateRequestAsyncTask().execute(NetworkUtils.buildAuthenticationURL());
+        //Intent intentForTournamentDetails = new Intent(MainActivity.this, ParticularTournamentDetails.class);
+        //startActivity(intentForTournamentDetails);
+    }
+
+    public class UpdateRequestAsyncTask extends AsyncTask<URL, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(MainActivity.this,
+                    R.style.AppTheme_Dark_Dialog);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Processing your request...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(URL... params) {
+            URL networkUrl = params[0];
+            String queryResults = null;
+
+            try {
+                //TODO : hook it up with a post service not a get service
+                queryResults = NetworkUtils.getResponseFromHttpUrl(networkUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return queryResults;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            progressDialog.dismiss();
+            if (s != null && !s.equals("")) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    if (jsonObject.getString("username").equals("Bret")) {
+                        Toast.makeText(getApplicationContext(), "Request Processed ", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Request Failed :( ", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            } else {
+                //TODO logic when there is no json data
+            }
+        }
     }
 
     public class ArchiveAsyncTask extends AsyncTask<URL, Void, String> {
