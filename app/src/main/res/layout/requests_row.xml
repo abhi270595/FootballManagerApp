@@ -25,34 +25,34 @@
             android:layout_height="108dp"
             android:gravity="center"
             android:text="name"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:background="@android:color/holo_blue_bright"
-            />
-
-        <!--<Button
-            android:id="@+id/recycler_accept_button"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@id/recycler_tournament_name"
-            android:gravity="left"
-            android:text="Accept"
             android:textColor="@android:color/black"
             android:textSize="18sp"
+            />
+
+        <Button
+            android:id="@+id/recycler_accept_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recycler_team_name"
+            style="?android:textAppearanceSmall"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:text="Accept"
+            android:background="#00ff00"
 
             />
         <Button
             android:id="@+id/recycler_reject_button"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@id/recycler_tournament_name"
-            android:gravity="right"
+            android:layout_width="wrap_content"
+            style="?android:textAppearanceSmall"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recycler_team_name"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:text="Reject"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:background="#ff3030"
 
             />
--->
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
