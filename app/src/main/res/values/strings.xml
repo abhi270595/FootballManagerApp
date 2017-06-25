@@ -30,4 +30,5 @@
     <string name="title_activity_particular_tournament_details">ParticularTournamentDetails</string>
     <string name="title_activity_notification">NotificationActivity</string>
     <string name="title_activity_edit_fixture">EditFixture</string>
+    <string name="title_activity_new_notification">NewNotificationActivity</string>
 </resources>

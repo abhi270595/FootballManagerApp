@@ -40,10 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//TODO : click listeners on the 2 request buttons
+//TODO : click listeners on the 2 request buttons -> done
 //TODO : post requests in NetworkUtils
-//TODO : Date picker bug
+//TODO : Date picker bug -> done
 //TODO : all recycler view items refactoting
+//TODO : notification swipe backend call
 
 
 public class MainActivity extends AppCompatActivity
@@ -479,7 +480,7 @@ public class MainActivity extends AppCompatActivity
 
                 return true;
             case R.id.action_notification:
-                Intent notificationIntent = new Intent(MainActivity.this, NotificationActivity.class);
+                Intent notificationIntent = new Intent(MainActivity.this, NewNotificationActivity.class);
                 startActivity(notificationIntent);
             default:
                 return super.onOptionsItemSelected(item);
