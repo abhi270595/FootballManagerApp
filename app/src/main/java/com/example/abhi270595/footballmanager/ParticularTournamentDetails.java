@@ -44,7 +44,7 @@ public class ParticularTournamentDetails extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FixtureFragment(), "Fixtures");
         adapter.addFragment(new StandingsFragment(), "Standings");
-        adapter.addFragment(new StatsFragment(), "Stats");
+        //adapter.addFragment(new StatsFragment(), "Stats");
         viewPager.setAdapter(adapter);
     }
 
