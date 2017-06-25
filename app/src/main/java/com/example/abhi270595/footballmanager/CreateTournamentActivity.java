@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -67,6 +68,21 @@ public class CreateTournamentActivity extends AppCompatActivity {
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.type_of_tournament);
         textView.setAdapter(adapter);
+
+        textView.setKeyListener(null);
+        textView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ((AutoCompleteTextView) v).showDropDown();
+                return false;
+            }
+        });
+        textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                ((AutoCompleteTextView) v).showDropDown();
+            }
+        });
 
     }
 
