@@ -47,30 +47,68 @@
             />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/MyTextInputLayout">
-        <EditText
+            android:orientation="horizontal"
+            >
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyTextInputLayout"
+                android:layout_weight="4"
+                >
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fixture_date"
+                    android:hint="Date"
+                    android:maxLines="1"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/date_button"
+                android:src="@drawable/ic_date_range_black_24dp"
+                android:background="@null"
+                android:layout_marginTop="16dp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/fixture_date"
-            android:hint="Date"
-            android:maxLines="1"
-            />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/MyTextInputLayout">
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fixture_time"
-            android:hint="Time"
-            android:maxLines="1"
-            />
-        </android.support.design.widget.TextInputLayout>
+            android:orientation="horizontal"
+            >
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/MyTextInputLayout"
+                android:layout_weight="4"
+                >
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fixture_time"
+                    android:hint="Time"
+                    android:maxLines="1"
+                    />
+            </android.support.design.widget.TextInputLayout>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/time_button"
+                android:src="@drawable/ic_access_time_black_24dp"
+                android:background="@null"
+                android:layout_marginTop="16dp"
+                />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/fixture_update"
