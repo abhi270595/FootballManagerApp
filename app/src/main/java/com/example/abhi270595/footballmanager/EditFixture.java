@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -28,6 +29,8 @@ public class EditFixture extends AppCompatActivity {
     private TextView fixtureName;
     private Button update;
     private String tour_name;
+    private ImageButton dateButton;
+    private ImageButton timeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,8 @@ public class EditFixture extends AppCompatActivity {
         fixtureName.setText(tour_name);
         fixtureLocation = (EditText) findViewById(R.id.fixture_location);
         fixtureTime = (EditText) findViewById(R.id.fixture_time);
-        fixtureTime.setOnClickListener(new View.OnClickListener() {
+        timeButton = (ImageButton) findViewById(R.id.time_button);
+        timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar mcurrentTime = Calendar.getInstance();
@@ -67,7 +71,8 @@ public class EditFixture extends AppCompatActivity {
         });
 
         fixtureDate = (EditText) findViewById(R.id.fixture_date);
-        fixtureDate.setOnClickListener(new View.OnClickListener() {
+        dateButton = (ImageButton) findViewById(R.id.date_button);
+        dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar mcurrentDate = Calendar.getInstance();
