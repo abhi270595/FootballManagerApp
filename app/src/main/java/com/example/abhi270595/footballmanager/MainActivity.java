@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
+                    getSupportActionBar().setTitle("Ongoing Tournaments");
                     mState = "";
                     invalidateOptionsMenu();
                     mRecyclerView.setLayoutParams(
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity
                     new NetworkAsyncTask().execute(NetworkUtils.buildUrl());
                     return true;
                 case R.id.navigation_archive:
+                    getSupportActionBar().setTitle("Finished Tournaments");
                     mState = "";
                     invalidateOptionsMenu();
                     mRecyclerView.setLayoutParams(
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity
                     new ArchiveAsyncTask().execute(NetworkUtils.buildArchiveURL());
                     return true;
                 case R.id.navigation_requests:
+                    getSupportActionBar().setTitle("Team Requests");
                     mState = "HIDE_MENU";
                     invalidateOptionsMenu();
                     mRecyclerView.setVisibility(View.INVISIBLE);
@@ -133,7 +136,7 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Football Manager");
+        getSupportActionBar().setTitle("Ongoing Tournaments");
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
